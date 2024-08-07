@@ -1,4 +1,4 @@
-# Importamos las librerias necesarias
+# Importamos las librerías necesarias
 import ctypes
 import hashlib
 import mysql.connector
@@ -7,28 +7,27 @@ import os
 # Importamos las funciones necesarias
 from dotenv import load_dotenv
 
-from pages.index import user, password_hash
-
 # Cargar las variables de entorno
 load_dotenv()
 
-# Funcion para conectar a la base de datos
-def conexion ():
+# Variable global para almacenar el usuario
+usuario_actual = None
+
+# Función para conectar a la base de datos
+def conexion():
     try:
         conexion = mysql.connector.connect(
-            host = os.getenv('host'),
-            user = os.getenv('user'),
-            password = os.getenv('password'),
-            database = os.getenv('database'),
+            host=os.getenv('host'),
+            user=os.getenv('user'),
+            password=os.getenv('password'),
+            database=os.getenv('database'),
         )
         return conexion
     except mysql.connector.Error as e:
         print(f"Error al conectar a la BD: {e}")
         return None
-conn = conexion()
 
-
-
+# Función para cerrar la conexión
 def cerrar_conexion(cursor, conn):
     cursor.close()
     conn.close()
@@ -44,49 +43,38 @@ def screenx(window_width):
 def screeny(window_height):
     return (pantalla_alto - window_height) // 2
 
-# Funcion para encriptar
+# Función para encriptar
 def encriptar(contraseña):
     md5 = hashlib.md5(contraseña.encode()).hexdigest()
     sha256 = hashlib.sha256(md5.encode()).hexdigest()
     hash = hashlib.sha256(sha256.encode()).hexdigest()
     return hash
 
-# Funcion para cerrar la ventana
+# Función para cerrar la ventana
 def cerrar_app(page):
     page.window_close()
 
-# Funcion para iniciar sesion a partir de los valores de usuario y contraseña de otro archivo
-def login(username, password_hash, page, tipo_user):
+# Función para validar el usuario
+def validar_usuario(user, password_hash):
+    global usuario_actual
     conn = conexion()
     if conn is None:
         print("Error al conectar a la base de datos")
-        return
-        
-        # Creamos el cursor
-    cursor = conn.cursor()
-
-        # Verificamos si el usuario existe
-    cursor.execute(f"SELECT * FROM users WHERE usuario = '{username}' AND contraseña = '{password_hash}'")
-    respuesta = cursor.fetchone()
-
-        # Si el usuario existe
-    if respuesta:
-            # Verificamos el tipo de usuario
-        if tipo_user == "Admin":
-            cursor.execute(f"SELECT * FROM users WHERE usuario = '{user}' AND tipo = '{tipo_user}'")
-            tipo_usr = cursor.fetchone()
-            if tipo_usr:
-                page.update()
-                page.go("/admin")
-                page.update()
-            else:
-                #open_error_permisos(e)
-                pass
-        else:
-            page.update()
-            page.go("/dashboard")
-            page.update()
+        return None
     else:
-        #open_error_user(e)
-        pass
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT * FROM users WHERE usuario = '{user}' AND contraseña = '{password_hash}'")
+        respuesta = cursor.fetchone()
+        if respuesta:
+            usr = respuesta[3]
+            usuario_actual = respuesta[1]
+            cerrar_conexion(cursor, conn)
+            return usr,  usuario_actual
+        else:
+            cerrar_conexion(cursor, conn)
+            return None
 
+# Función para obtener el usuario actual
+def obtener_usuario_actual():
+    global usuario_actual
+    return usuario_actual

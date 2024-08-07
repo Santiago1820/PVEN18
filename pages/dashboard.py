@@ -8,6 +8,7 @@ from models.mvc import *
 
 # Codigo de la funcion RegisterPage
 def Dashboard(page: ft.Page):
+    usuario = obtener_usuario_actual()
     # Definir las propiedades de la pagina
     page.window_title_bar_hidden = False
     page.window_maximized = True
@@ -17,7 +18,7 @@ def Dashboard(page: ft.Page):
     page.add(ft.Row([
         ft.Column([
             ft.Text("Dashboard", size=30),
-            ft.Text(f"Bienvenido al dashboard", size=20),
+            ft.Text(f"Bienvenido al dashboard {usuario}", size=20),
             ft.Row([
                 ft.ElevatedButton("Salir", icon="logout", icon_color="red", color="red", bgcolor="TRANSPARENT" ,on_click=lambda _: cerrar_app(page)),
             ]),

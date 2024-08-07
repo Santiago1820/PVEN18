@@ -37,19 +37,6 @@ def LoginPage(page: ft.Page):
                                 prefix_icon=ft.icons.LOCK,
                                 password=True,
                             )
-    
-    tipo = ft.Dropdown(
-        width=280,
-        height=50,
-        hint_text='Selecciona un tipo de usuario',
-        text_size= 15,
-        border_color= 'transparent',
-        options =
-        [
-            ft.dropdown.Option("Operativo"),
-            ft.dropdown.Option("Administrativo"),
-        ]
-                        )
 
     # Mensaje de error de validacion de campos
     def open_error_campo(e):
@@ -122,22 +109,29 @@ def LoginPage(page: ft.Page):
 
     # Definimos la funcion para el boton de entrar
     def entrar_click(e):
-        global user
         user = username.value
         contra = password.value
-        tipo_user = tipo.value
         page.update()
 
         # Validamos los campos
-        if user == "" or contra == "" or tipo_user == "":
+        if user == "" or contra == "":
             open_error_campo(e)
             return
         
         # Encriptamos la contraseña
         password_hash = encriptar(contra)
 
-        # Conectamos a la base de datos
-        login(username.value, password_hash, tipo_user)
+        # Validamos el usuario
+        usuario_valido = validar_usuario(user, password_hash)
+        if usuario_valido is None:
+            open_error_user(e)
+            return
+        elif usuario_valido[0] == "Administrativo":
+            page.go("/admin")
+        else:
+            page.go("/dashboard")
+            return
+        
 
 
     # Barra de titulo personalizada
@@ -184,9 +178,6 @@ def LoginPage(page: ft.Page):
                         ),
                         ft.Container(
                            password,padding=ft.padding.only(40,20),
-                        ),
-                        ft.Container(
-                            tipo,padding=ft.padding.only(40,3),
                         ),
                         ft.Container(
                             ft.TextButton(

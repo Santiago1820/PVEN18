@@ -5,5 +5,5 @@ An example of a minimal Flet app.
 To run the app:
 
 ```
-flet run PVEN18
+flet run [app_directory]
 ```
