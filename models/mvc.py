@@ -13,6 +13,9 @@ load_dotenv()
 # Variable global para almacenar el usuario
 usuario_actual = None
 
+# Variable global para almacenar el id del usuario
+id_user = None
+
 # Función para conectar a la base de datos
 def conexion():
     try:
@@ -68,8 +71,9 @@ def validar_usuario(user, password_hash):
         if respuesta:
             usr = respuesta[3]
             usuario_actual = respuesta[1]
+            id_user = respuesta[0]
             cerrar_conexion(cursor, conn)
-            return usr,  usuario_actual
+            return usr,  usuario_actual, id_user
         else:
             cerrar_conexion(cursor, conn)
             return None
@@ -78,3 +82,8 @@ def validar_usuario(user, password_hash):
 def obtener_usuario_actual():
     global usuario_actual
     return usuario_actual
+
+# Función para obtener el id del usuario actual
+def obtener_id_user():
+    global id_user
+    return id_user
