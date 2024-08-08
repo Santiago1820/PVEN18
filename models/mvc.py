@@ -66,11 +66,11 @@ def validar_usuario(user, password_hash):
         return None
     else:
         cursor = conn.cursor()
-        cursor.execute(f"SELECT * FROM users WHERE usuario = '{user}' AND contraseña = '{password_hash}'")
+        cursor.execute(f"SELECT * FROM Usuarios WHERE correo_electronico = '{user}' AND contrasena = '{password_hash}'")
         respuesta = cursor.fetchone()
         if respuesta:
-            usr = respuesta[3]
-            usuario_actual = respuesta[1]
+            usr = respuesta[5]
+            usuario_actual = respuesta[2]
             id_user = respuesta[0]
             cerrar_conexion(cursor, conn)
             return usr,  usuario_actual, id_user
