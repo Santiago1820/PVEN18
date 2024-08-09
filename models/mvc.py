@@ -10,10 +10,8 @@ from dotenv import load_dotenv
 # Cargar las variables de entorno
 load_dotenv()
 
-# Variable global para almacenar el usuario
+# Variable global para almacenar datos del usuario
 usuario_actual = None
-
-# Variable global para almacenar el id del usuario
 id_user = None
 
 # Función para conectar a la base de datos
@@ -60,6 +58,8 @@ def cerrar_app(page):
 # Función para validar el usuario
 def validar_usuario(user, password_hash):
     global usuario_actual
+    global id_user
+    global name
     conn = conexion()
     if conn is None:
         print("Error al conectar a la base de datos")
@@ -69,21 +69,20 @@ def validar_usuario(user, password_hash):
         cursor.execute(f"SELECT * FROM Usuarios WHERE correo_electronico = '{user}' AND contrasena = '{password_hash}'")
         respuesta = cursor.fetchone()
         if respuesta:
-            usr = respuesta[5]
+            usr = respuesta[4]
             usuario_actual = respuesta[2]
             id_user = respuesta[0]
+            name = respuesta[1]
             cerrar_conexion(cursor, conn)
-            return usr,  usuario_actual, id_user
+            return usr, usuario_actual, id_user, name
         else:
             cerrar_conexion(cursor, conn)
             return None
 
-# Función para obtener el usuario actual
+# Funciones para obtener datos de usuario
 def obtener_usuario_actual():
     global usuario_actual
     return usuario_actual
-
-# Función para obtener el id del usuario actual
-def obtener_id_user():
+def obtener_id_actual():
     global id_user
     return id_user

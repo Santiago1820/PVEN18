@@ -22,7 +22,7 @@ def LoginPage(page: ft.Page):
     username = ft.TextField(
                                 width=280,
                                 height=40,
-                                hint_text='Usuario',
+                                hint_text='Correo',
                                 border='underline',
                                 color="#303030",
                                 prefix_icon=ft.icons.PERSON,
