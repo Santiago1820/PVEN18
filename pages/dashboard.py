@@ -6,11 +6,13 @@ from models.pages import *
 from config.settings import *
 from models.mvc import *
 from models.query import *
-
+from sources.menu import *
 
 # Codigo de la funcion RegisterPage
 def Dashboard(page: ft.Page):
-    if is_logged(page) is not False:
+    page.clean()
+    page.update()
+    if is_logged(page) is not False: 
         nombre = nombre_usuario()[0]
         proyectos = proyectos_usuario()
         # Definir las propiedades de la pagina
@@ -23,7 +25,9 @@ def Dashboard(page: ft.Page):
             ft.Column([
                 ft.Text("Dashboard", size=30),
                 ft.Row([
-                    ft.ElevatedButton("Salir", icon="logout", icon_color="red", color="red", bgcolor="TRANSPARENT" ,on_click=lambda _: cerrar_app(page)),
+                    ft.Column([
+                    menu(page),
+                    ]),
                 ]),
             ],
             spacing=30,
@@ -44,4 +48,4 @@ def Dashboard(page: ft.Page):
         spacing=30,
         alignment="start",
         ))
-        page.update()
+    page.update()

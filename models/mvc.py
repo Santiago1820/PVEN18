@@ -88,6 +88,8 @@ def obtener_tipo_actual():
 # Función para validar si el usuario está logueado
 def is_logged(page):
     if id_user is None:
+        page.clean()
+        page.update()
         page.go("/")
         return False
     
@@ -96,15 +98,21 @@ def is_admin(page):
      if usr == "Administrativo":
         return True
      else:
-         page.go("/dashboard")
-         return False
+        page.clean()
+        page.update()
+        page.go("/dashboard")
+        return False
 
 # Función para bloquear el login/register si el usuario ya está logueado      
 def login_block(page):
     if id_user is not None:
         if usr == "Administrativo":
+            page.clean()
+            page.update()
             page.go("/admin")
         else:
+            page.clean()
+            page.update()
             page.go("/dashboard")
         return False
 
@@ -114,5 +122,7 @@ def cerrar_sesion(page):
     global usr
     id_user = None
     usr = None
+    page.clean()
+    page.update()
     page.go("/")
     return id_user, usr

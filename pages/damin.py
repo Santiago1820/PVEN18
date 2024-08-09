@@ -9,6 +9,8 @@ from config.settings import titulo, tema, logo
 
 # Codigo de la funcion RegisterPage
 def Dadmin(page: ft.Page):
+    page.clean()
+    page.update()
     if is_logged(page) is not False:
         if is_admin(page) is True:
             nombre = nombre_usuario()[0]
@@ -20,5 +22,9 @@ def Dadmin(page: ft.Page):
             page.padding = 0
             # Codigo de la pagina de registro
             page.add(
+                ft.ElevatedButton("Perfil", icon="person", icon_color="red", color="red", bgcolor="TRANSPARENT" ,on_click=lambda _: page.go("/me")),
+                ft.ElevatedButton("Dashboard", icon="add_home", icon_color="red", color="red", bgcolor="TRANSPARENT" ,on_click=lambda _: page.go("/dashboard")),
                 ft.Text(f"Bienvenido al panel administrativo {nombre[0]}", size=20),
+                
                 )
+    page.update()

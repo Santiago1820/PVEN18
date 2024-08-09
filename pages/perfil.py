@@ -6,13 +6,17 @@ from models.pages import *
 from config.settings import *
 from models.mvc import *
 from models.query import *
-
+from sources.menu import *
 
 # Codigo de la funcion Profile
 def Profile(page: ft.Page):
+    page.clean()
+    page.update()
     if is_logged(page) is not False:
         nombre = nombre_usuario()[0]
-        proyectos = proyectos_usuario()
+        correo = correo_usuario()[0]
+        contraseña = contraseña_usuario()[0]
+        imagen = imagen_usuario()[0]
         # Definir las propiedades de la pagina
         page.window_title_bar_hidden = False
         page.window_maximized = True
@@ -23,7 +27,9 @@ def Profile(page: ft.Page):
             ft.Column([
                 ft.Text("Me", size=30),
                 ft.Row([
-                    ft.ElevatedButton("Salir", icon="logout", icon_color="red", color="red", bgcolor="TRANSPARENT" ,on_click=lambda _: cerrar_app(page)),
+                    ft.Column([
+                    menu(page),
+                    ]),
                 ]),
             ],
             spacing=30,
@@ -32,8 +38,15 @@ def Profile(page: ft.Page):
             ft.Row([
                 ft.Container(
                     ft.Column([
-                    ft.Text(f"Bienvenido a {nombre_app} {nombre[0]}", size=40),
-                    ft.Text(f"Proyectos {proyectos}", size=20),
+                    ft.Text(f"Mi perfil", size=40),
+                    ft.Container(
+                        ft.Image(
+                            src= f"../{imagen[0]}",
+                            width=200,
+                            height=200,),
+                    ),
+                    ft.Text(f"Nombre: {nombre[0]}", size=20),
+                    ft.Text(f"Correo Electrónico: {correo[0]}", size=20),
                     ]),
                 ),
             ],
@@ -44,4 +57,4 @@ def Profile(page: ft.Page):
         spacing=30,
         alignment="start",
         ))
-        page.update()
+    page.update()

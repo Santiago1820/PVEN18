@@ -8,10 +8,13 @@ from models.mvc import *
 
 # Codigo de la funcion LoginPage
 def LoginPage(page: ft.Page):
+    page.clean()
+    page.update()
     if login_block(page) is not True:
         # Definir las propiedades de la pagina
         page.window_width = 580
         page.window_title_bar_hidden = True
+        page.window_maximized = False
         page.window_height = 740
         page.title = titulo
         page.theme_mode = tema
@@ -226,3 +229,4 @@ def LoginPage(page: ft.Page):
         gradient=ft.LinearGradient(['#09203f', '#537895']),
     )
         )
+    page.update()

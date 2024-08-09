@@ -8,6 +8,8 @@ from config.settings import titulo, tema, logo
 
 # Codigo de la funcion RegisterPage
 def RegisterPage(page: ft.Page):
+    page.clean()
+    page.update()
     if login_block(page) is not True:
         # Definir las propiedades de la pagina
         page.window_title_bar_hidden = True
@@ -123,3 +125,4 @@ def RegisterPage(page: ft.Page):
         gradient=ft.LinearGradient(['#09203f', '#537895']),
     )
         )
+    page.update()
