@@ -8,8 +8,6 @@ from models.mvc import *
 
 # Codigo de la funcion LoginPage
 def LoginPage(page: ft.Page):
-    page.clean()
-    page.update()
     if login_block(page) is not True:
         # Definir las propiedades de la pagina
         page.window_width = 580
@@ -29,7 +27,7 @@ def LoginPage(page: ft.Page):
                                     hint_text='Correo',
                                     border='underline',
                                     color="#303030",
-                                    prefix_icon=ft.icons.PERSON,
+                                    prefix_icon=ft.icons.EMAIL,
                                 )
         password = ft.TextField(
                                     can_reveal_password=True,

@@ -74,7 +74,7 @@ def RegisterPage(page: ft.Page):
                                     hint_text='Usuario',
                                     border='underline',
                                     color="#303030",
-                                    prefix_icon=ft.icons.PERSON,
+                                    prefix_icon=ft.icons.EMAIL,
                                 ),padding=ft.padding.only(40,20),
                             ),
                             ft.Container(
