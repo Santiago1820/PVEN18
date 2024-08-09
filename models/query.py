@@ -14,7 +14,7 @@ def nombre_usuario():
         cerrar_conexion(cursor, conn)
         return respuesta
 
-# Función para ver un proyecto del usuario
+# Función para ver proyectos del usuario
 def proyectos_usuario():
     id_us = obtener_id_actual()
     conn = conexion()
