@@ -7,6 +7,7 @@ from pages.register import RegisterPage
 from pages.Error404 import Error404
 from pages.dashboard import Dashboard
 from pages.damin import Dadmin
+from pages.perfil import Profile
 
 # Definir la funcion Pages que recibe un objeto de tipo Page
 def Pages(page: ft.Page):
@@ -25,6 +26,8 @@ def Pages(page: ft.Page):
             Dashboard(page)
         elif page.route == "/admin":
             Dadmin(page)
+        elif page.route == "/me":
+            Profile(page)
         else:
             Error404(page)
         page.update()

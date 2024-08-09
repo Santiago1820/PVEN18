@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Variable global para almacenar datos del usuario
+usr = None
 id_user = None
 
 # Función para conectar a la base de datos
@@ -52,11 +53,13 @@ def encriptar(contraseña):
 
 # Función para cerrar la ventana
 def cerrar_app(page):
+    cerrar_sesion(page)
     page.window_close()
 
 # Función para validar el usuario
 def validar_usuario(user, password_hash):
     global id_user
+    global usr
     conn = conexion()
     if conn is None:
         print("Error al conectar a la base de datos")
@@ -74,7 +77,42 @@ def validar_usuario(user, password_hash):
             cerrar_conexion(cursor, conn)
             return None
 
-# Función para obtener datos de usuario
+# Funciones para obtener datos de usuario
 def obtener_id_actual():
     global id_user
     return id_user
+def obtener_tipo_actual():
+    global usr
+    return usr
+
+# Función para validar si el usuario está logueado
+def is_logged(page):
+    if id_user is None:
+        page.go("/")
+        return False
+    
+# Función para saber si el usuario es administrador
+def is_admin(page):
+     if usr == "Administrativo":
+        return True
+     else:
+         page.go("/dashboard")
+         return False
+
+# Función para bloquear el login/register si el usuario ya está logueado      
+def login_block(page):
+    if id_user is not None:
+        if usr == "Administrativo":
+            page.go("/admin")
+        else:
+            page.go("/dashboard")
+        return False
+
+# Función para cerrar la sesión    
+def cerrar_sesion(page):
+    global id_user
+    global usr
+    id_user = None
+    usr = None
+    page.go("/")
+    return id_user, usr
