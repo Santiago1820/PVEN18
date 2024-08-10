@@ -10,6 +10,16 @@ from sources.menu import *
 
 # Codigo de la funcion RegisterPage
 def Dashboard(page: ft.Page):
+    def actualizar_tabla_proyectos():
+        proyectos = proyectos_usuario()
+        tabla_proyectos.rows = [
+            ft.DataRow(cells=[
+                ft.DataCell(ft.Text(proyecto[0])),
+                ft.DataCell(ft.ElevatedButton("Seleccionar", on_click=lambda e, p=proyecto: ver_mas_proyecto(p))),
+            ]) for proyecto in proyectos
+        ]
+        page.update()
+
     page.clean()
     page.update()
     if is_logged(page) is not False: 
@@ -39,15 +49,20 @@ def Dashboard(page: ft.Page):
                     ft.Text(f"Dashboard", size=40),
                     ft.Row([
                         ft.Column([
-                        ft.DataTable(
+                        tabla_proyectos := ft.DataTable(
                             border=ft.border.all(2, "gray"),
                             border_radius=10,
                             vertical_lines=ft.BorderSide(3, "gray"),
                             horizontal_lines=ft.BorderSide(3, "gray"),
                             columns=[
                                 ft.DataColumn(ft.Text("Proyectos:", size=20)),
-                                ft.DataColumn(ft.Text("", size=20)),],
-                                
+                                ft.DataColumn(ft.IconButton(
+                                    icon=ft.icons.REFRESH,
+                                    icon_size=20,
+                                    icon_color="white",
+                                    on_click=lambda e: actualizar_tabla_proyectos(),
+                                )),
+                            ],
                             rows=[
                                 ft.DataRow(cells=[
                                     ft.DataCell(ft.Text(proyecto[0])),
