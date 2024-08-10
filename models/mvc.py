@@ -122,7 +122,7 @@ def cerrar_sesion(page):
     global usr
     id_user = None
     usr = None
+    page.go("/")
     page.clean()
     page.update()
-    page.go("/")
     return id_user, usr

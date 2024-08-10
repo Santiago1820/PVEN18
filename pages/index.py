@@ -185,7 +185,7 @@ def LoginPage(page: ft.Page):
                                 ft.TextButton(
                                     content= ft.Text("¡Olvidé mi contraseña!",
                                                     color="#303030",
-                                                    weight='w500',),
+                                                    weight='w500',),on_click=lambda _: page.go("/forgot"),
                                 ),padding=ft.padding.only(40),
                             ),
                             ft.Container(

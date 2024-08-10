@@ -8,8 +8,8 @@ from models.mvc import *
 from models.query import *
 from sources.menu import *
 
-# Codigo de la funcion RegisterPage
-def Dashboard(page: ft.Page):
+# Codigo de la funcion Dashboard
+def Reports(page: ft.Page):
     page.clean()
     page.update()
     if is_logged(page) is not False: 
@@ -36,8 +36,8 @@ def Dashboard(page: ft.Page):
             ft.Row([
                 ft.Container(
                     ft.Column([
-                    ft.Text(f"Dashboard", size=40),
-                    ft.Text(f"Bienvenido a {nombre_app} {nombre[0]}", size=20),
+                    ft.Text(f"Reportes", size=40),
+                    ft.Text(f"Proyectos {proyectos}", size=20),
                     ]),
                 ),
             ],
