@@ -13,8 +13,8 @@ def Dashboard(page: ft.Page):
     page.clean()
     page.update()
     if is_logged(page) is not False: 
-        nombre = nombre_usuario()[0]
         proyectos = proyectos_usuario()
+        tareas = tareas_usuario()
         # Definir las propiedades de la pagina
         page.window_title_bar_hidden = False
         page.window_maximized = True
@@ -37,7 +37,33 @@ def Dashboard(page: ft.Page):
                 ft.Container(
                     ft.Column([
                     ft.Text(f"Dashboard", size=40),
-                    ft.Text(f"Bienvenido a {nombre_app} {nombre[0]}", size=20),
+                    ft.Row([
+                        ft.Column([
+                        ft.DataTable(
+                            border=ft.border.all(2, "gray"),
+                            border_radius=10,
+                            vertical_lines=ft.BorderSide(3, "gray"),
+                            horizontal_lines=ft.BorderSide(3, "gray"),
+                            columns=[
+                                ft.DataColumn(ft.Text("Proyectos:", size=20)),
+                                ft.DataColumn(ft.Text("", size=20)),],
+                                
+                            rows=[
+                                ft.DataRow(cells=[
+                                    ft.DataCell(ft.Text(proyecto[0])),
+                                    ft.DataCell(ft.ElevatedButton("Seleccionar", on_click=lambda e, p=proyecto: ver_mas_proyecto(p))),
+                                ]) for proyecto in proyectos
+                            ],
+                        ), # Proyectos de el usuario
+                        ]), # Proyectos
+                        ft.Column([
+                        ft.Text(f"Tareas:", size=20),
+                        ft.DataTable(), # Tareas de el proyecto
+                        ]), # Tareas
+                        ft.Column([
+                        ft.Text(f"Información:", size=20),
+                        ]), # Informacion
+                    ]),
                     ]),
                 ),
             ],
@@ -49,3 +75,6 @@ def Dashboard(page: ft.Page):
         alignment="start",
         ))
     page.update()
+
+def ver_mas_proyecto(proyecto):
+    pass
