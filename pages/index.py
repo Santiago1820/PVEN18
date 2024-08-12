@@ -16,6 +16,7 @@ def LoginPage(page: ft.Page):
         page.window_height = 740
         page.title = titulo
         page.theme_mode = tema
+        page.bgcolor = ft.colors.SURFACE_VARIANT
         page.padding = 0
         page.window_top = screeny(page.window_height)
         page.window_left = screenx(page.window_width)
@@ -152,7 +153,7 @@ def LoginPage(page: ft.Page):
                             rotate=ft.Rotate(0.98*3.14),
                             width=360,
                             height=560,
-                            bgcolor="#22ffffff",
+                            bgcolor="#686868",
                         ),
                 ft.Container(
                     ft.Container(
@@ -165,6 +166,7 @@ def LoginPage(page: ft.Page):
                             ),
                             ft.Text(
                                 "Iniciar Sesión",
+                                color="black",
                                 size=30,
                                 weight='w700',
                                 width=360,
@@ -172,6 +174,7 @@ def LoginPage(page: ft.Page):
                             ),
                             ft.Text(
                                 "Por favor inicie sesión para continuar",
+                                color="#2e526d",
                                 width=360,
                                 text_align="center",
                             ),

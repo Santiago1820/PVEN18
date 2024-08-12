@@ -8,7 +8,7 @@ def menu(page):
     # Menu usuario
     menu_items = [
         ft.Container(
-            content=ft.Row([ft.Icon(ft.icons.HOME), ft.Text("Inicio")]),
+            content=ft.Row([ft.Icon(ft.icons.HOME, color="white"), ft.Text("Inicio")]),
             padding=10,
             margin=ft.margin.only(bottom=5),
             ink=True,
@@ -22,14 +22,14 @@ def menu(page):
             on_click=lambda _: page.go("/me")
         ),
         ft.Container(
-            content=ft.Row([ft.Icon(ft.icons.PEOPLE), ft.Text("Clientes")]),
+            content=ft.Row([ft.Icon(ft.icons.PEOPLE, color="#f9a640",), ft.Text("Clientes")]),
             padding=10,
             margin=ft.margin.only(bottom=5),
             ink=True,
             on_click=lambda _: page.go("/clients")
         ),
         ft.Container(
-            content=ft.Row([ft.Icon(ft.icons.BAR_CHART), ft.Text("Reportes")]),
+            content=ft.Row([ft.Icon(ft.icons.BAR_CHART, color="#a4c639"), ft.Text("Reportes")]),
             padding=10,
             margin=ft.margin.only(bottom=5),
             ink=True,

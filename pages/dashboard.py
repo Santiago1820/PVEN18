@@ -27,7 +27,7 @@ def Dashboard(page: ft.Page):
             ft.DataRow(cells=[
                 ft.DataCell(ft.Text(tarea[0])),
                 ft.DataCell(ft.ElevatedButton("Seleccionar", 
-                                              style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8)),
+                                              style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8),color="#f7ee8a"),
                                               on_click=lambda e, t=tarea: ver_mas_tarea(t))),
             ]) for tarea in tareas
         ]
@@ -106,7 +106,7 @@ def Dashboard(page: ft.Page):
                 ft.DataRow(cells=[
                     ft.DataCell(ft.Text(proyecto[0])),
                     ft.DataCell(ft.ElevatedButton("Seleccionar", 
-                                                  style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8)),
+                                                  style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), color="#a4c639"),
                                                   on_click=lambda e, p=proyecto[0]: ver_mas_proyecto(p))),
                 ]) for proyecto in proyectos
             ],

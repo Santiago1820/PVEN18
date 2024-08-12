@@ -29,7 +29,7 @@ def Profile(page: ft.Page):
         # Estilos comunes
         title_style = ft.TextStyle(size=30, weight=ft.FontWeight.BOLD)
         card_style = {
-            "bgcolor": ft.colors.SURFACE,
+            "bgcolor": "#a5a5a5",
             "border_radius": 10,
             "padding": 20,
             "shadow": ft.BoxShadow(
