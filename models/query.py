@@ -1,5 +1,6 @@
 from models.mvc import *
 id_proy = None
+id_tarea = None
 
 # Función para obtener el nombre del usuario actual
 def nombre_usuario():

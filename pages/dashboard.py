@@ -102,4 +102,3 @@ def Dashboard(page: ft.Page):
         alignment="start",
         ))
     page.update()
-
