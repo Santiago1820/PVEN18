@@ -10,21 +10,29 @@ from sources.menu import *
 
 # Codigo de la funcion RegisterPage
 def Dashboard(page: ft.Page):
-    def actualizar_tabla_proyectos():
-        proyectos = proyectos_usuario()
-        tabla_proyectos.rows = [
-            ft.DataRow(cells=[
-                ft.DataCell(ft.Text(proyecto[0])),
-                ft.DataCell(ft.ElevatedButton("Seleccionar", on_click=lambda e, p=proyecto: ver_mas_proyecto(p))),
-            ]) for proyecto in proyectos
-        ]
+    def ver_mas_proyecto(proyecto):
+        id_proyecto_usuario(proyecto)
+        guardar_id_proyecto()[0]
+        actualizar_tabla_tareas()
         page.update()
+    
+    def actualizar_tabla_tareas():
+        tareas = tareas_usuario()
+        tabla_tareas.rows = [
+            ft.DataRow(cells=[
+                ft.DataCell(ft.Text(tarea[0])),
+                ft.DataCell(ft.ElevatedButton("Seleccionar", on_click=lambda e, t=tarea: ver_mas_tarea(t))),
+            ]) for tarea in tareas
+        ]
+
+    def ver_mas_tarea(tarea):
+        pass
 
     page.clean()
     page.update()
     if is_logged(page) is not False: 
         proyectos = proyectos_usuario()
-        tareas = tareas_usuario()
+        # tareas = tareas_usuario()
         # Definir las propiedades de la pagina
         page.window_title_bar_hidden = False
         page.window_maximized = True
@@ -56,24 +64,28 @@ def Dashboard(page: ft.Page):
                             horizontal_lines=ft.BorderSide(3, "gray"),
                             columns=[
                                 ft.DataColumn(ft.Text("Proyectos:", size=20)),
-                                ft.DataColumn(ft.IconButton(
-                                    icon=ft.icons.REFRESH,
-                                    icon_size=20,
-                                    icon_color="white",
-                                    on_click=lambda e: actualizar_tabla_proyectos(),
-                                )),
+                                ft.DataColumn(ft.Text("")),
                             ],
                             rows=[
                                 ft.DataRow(cells=[
                                     ft.DataCell(ft.Text(proyecto[0])),
-                                    ft.DataCell(ft.ElevatedButton("Seleccionar", on_click=lambda e, p=proyecto: ver_mas_proyecto(p))),
+                                    ft.DataCell(ft.ElevatedButton("Seleccionar", on_click=lambda e, p=proyecto[0]: ver_mas_proyecto(p))),
                                 ]) for proyecto in proyectos
                             ],
                         ), # Proyectos de el usuario
                         ]), # Proyectos
                         ft.Column([
-                        ft.Text(f"Tareas:", size=20),
-                        ft.DataTable(), # Tareas de el proyecto
+                        tabla_tareas := ft.DataTable(
+                            border=ft.border.all(2, "gray"),
+                            border_radius=10,
+                            vertical_lines=ft.BorderSide(3, "gray"),
+                            horizontal_lines=ft.BorderSide(3, "gray"),
+                            columns=[
+                                ft.DataColumn(ft.Text("Tareas:", size=20)),
+                                ft.DataColumn(ft.Text("")),
+                            ],
+                            rows=[],
+                        ), # Proyectos de el usuario
                         ]), # Tareas
                         ft.Column([
                         ft.Text(f"Información:", size=20),
@@ -91,5 +103,3 @@ def Dashboard(page: ft.Page):
         ))
     page.update()
 
-def ver_mas_proyecto(proyecto):
-    pass

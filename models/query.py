@@ -1,4 +1,5 @@
 from models.mvc import *
+id_proy = None
 
 # Función para obtener el nombre del usuario actual
 def nombre_usuario():
@@ -86,14 +87,14 @@ def tipo_usuario():
     
 # Función para obtener el titulo de una tarea
 def tareas_usuario():
-    id_us = obtener_id_actual()
+    id_p = guardar_id_proyecto()[0]
     conn = conexion()
     if conn is None:
         print("Error al conectar a la base de datos")
         return None
     else:
         cursor = conn.cursor()
-        cursor.execute(f"SELECT titulo FROM Tareas WHERE usuario_id = '{id_us}'")
+        cursor.execute(f"SELECT titulo FROM Tareas WHERE id_proyecto = '{id_p}'")
         respuesta = cursor.fetchall()
         cerrar_conexion(cursor, conn)
         return respuesta
@@ -247,3 +248,4 @@ def id_proyecto_usuario(p):
 def guardar_id_proyecto():
     global id_proy
     return id_proy 
+
