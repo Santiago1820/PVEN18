@@ -22,22 +22,40 @@ def Pages(page: ft.Page):
     def route_change(route):
         page.clean()
         if page.route == "/register":
+            page.clean()
+            page.update()
             RegisterPage(page)
         elif page.route == "/":
+            page.clean()
+            page.update()
             LoginPage(page)
         elif page.route == "/dashboard":
+            page.clean()
+            page.update()
             Dashboard(page)
         elif page.route == "/admin":
+            page.clean()
+            page.update()
             Dadmin(page)
         elif page.route == "/me":
+            page.clean()
+            page.update()
             Profile(page)
         elif page.route == "/forgot":
+            page.clean()
+            page.update()
             ForgotPage(page)
         elif page.route == "/reports":
+            page.clean()
+            page.update()
             Reports(page)
         elif page.route == "/clients":
-            Clients(page)
+            page.clean()
+            page.update()
+            Clients(page)       
         else:
+            page.clean()
+            page.update()
             Error404(page)
         page.update()
 

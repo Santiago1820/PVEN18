@@ -1,13 +1,17 @@
+# Importamos las funciones necesarias
 from models.mvc import *
+
+# Variables globales
 id_proy = None
 id_tarea = None
 
+# Funciones para los datos del Usuario
+#-------------------------------------#
 # Función para obtener el nombre del usuario actual
 def nombre_usuario():
     id_us = obtener_id_actual()
     conn = conexion()
-    if conn is None:
-        print("Error al conectar a la base de datos")
+    if conn is None:       
         return None
     else:
         cursor = conn.cursor()
@@ -16,26 +20,11 @@ def nombre_usuario():
         cerrar_conexion(cursor, conn)
         return respuesta
 
-# Función para ver proyectos del usuario
-def proyectos_usuario():
-    id_us = obtener_id_actual()
-    conn = conexion()
-    if conn is None:
-        print("Error al conectar a la base de datos")
-        return None
-    else:
-        cursor = conn.cursor()
-        cursor.execute(f"SELECT nombre FROM Proyectos WHERE usuario_id = '{id_us}'")
-        respuesta = cursor.fetchall()
-        cerrar_conexion(cursor, conn)
-        return respuesta
-    
 # Función para obtener el correo del usuario actual
 def correo_usuario():
     id_us = obtener_id_actual()
     conn = conexion()
-    if conn is None:
-        print("Error al conectar a la base de datos")
+    if conn is None:       
         return None
     else:
         cursor = conn.cursor()
@@ -44,26 +33,11 @@ def correo_usuario():
         cerrar_conexion(cursor, conn)
         return respuesta
 
-# Función para obtener la contraseña del usuario actual
-def contraseña_usuario():
-    id_us = obtener_id_actual()
-    conn = conexion()
-    if conn is None:
-        print("Error al conectar a la base de datos")
-        return None
-    else:
-        cursor = conn.cursor()
-        cursor.execute(f"SELECT contrasena FROM Usuarios WHERE id = '{id_us}'")
-        respuesta = cursor.fetchall()
-        cerrar_conexion(cursor, conn)
-        return respuesta
-    
 # Función para obtener la imagen del usuario actual
 def imagen_usuario():
     id_us = obtener_id_actual()
     conn = conexion()
-    if conn is None:
-        print("Error al conectar a la base de datos")
+    if conn is None:        
         return None
     else:
         cursor = conn.cursor()
@@ -72,12 +46,24 @@ def imagen_usuario():
         cerrar_conexion(cursor, conn)
         return respuesta
     
+# Función para obtener la contraseña del usuario actual
+def contraseña_usuario():
+    id_us = obtener_id_actual()
+    conn = conexion()
+    if conn is None:        
+        return None
+    else:
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT contrasena FROM Usuarios WHERE id = '{id_us}'")
+        respuesta = cursor.fetchall()
+        cerrar_conexion(cursor, conn)
+        return respuesta
+    
 # Función para obtener el tipo de usuario
 def tipo_usuario():
     id_us = obtener_id_actual()
     conn = conexion()
-    if conn is None:
-        print("Error al conectar a la base de datos")
+    if conn is None:        
         return None
     else:
         cursor = conn.cursor()
@@ -86,12 +72,27 @@ def tipo_usuario():
         cerrar_conexion(cursor, conn)
         return respuesta
     
+# Funciones para los datos de los Proyectos y tareas
+# ---------------------------------------- #    
+# Función para ver proyectos del usuario
+def proyectos_usuario():
+    id_us = obtener_id_actual()
+    conn = conexion()
+    if conn is None:        
+        return None
+    else:
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT nombre FROM Proyectos WHERE usuario_id = '{id_us}'")
+        respuesta = cursor.fetchall()
+        cerrar_conexion(cursor, conn)
+        return respuesta
+    
+    
 # Función para obtener el titulo de una tarea
 def tareas_usuario():
     id_p = guardar_id_proyecto()[0]
     conn = conexion()
-    if conn is None:
-        print("Error al conectar a la base de datos")
+    if conn is None:        
         return None
     else:
         cursor = conn.cursor()
@@ -100,82 +101,37 @@ def tareas_usuario():
         cerrar_conexion(cursor, conn)
         return respuesta
     
-# Función para obtener descripcion de una tarea 
-def descripcion_tareas_usuario():
-    id_us = obtener_id_actual()
+# Función para obtener la tarea mediante el id
+def info_tarea():
+    id_t = guardar_id_tarea()[0]
     conn = conexion()
-    if conn is None:
-        print("Error al conectar a la base de datos")
+    if conn is None:       
         return None
     else:
         cursor = conn.cursor()
-        cursor.execute(f"SELECT descripcion FROM Tareas WHERE usuario_id = '{id_us}'")
+        cursor.execute(f"SELECT * FROM Tareas WHERE id = '{id_t}'")
         respuesta = cursor.fetchall()
         cerrar_conexion(cursor, conn)
         return respuesta
-    
-# Función para obtener la fecha_creacion de una tarea
-def fecha_creacion_tareas_usuario():
-    id_us = obtener_id_actual()
+
+# Funcion para obtener el nombre de un proyecto
+def nombre_proyecto():
+    id_p = guardar_id_proyecto()[0]
     conn = conexion()
     if conn is None:
-        print("Error al conectar a la base de datos")
         return None
     else:
         cursor = conn.cursor()
-        cursor.execute(f"SELECT fecha_creacion FROM Tareas WHERE usuario_id = '{id_us}'")
-        respuesta = cursor.fetchall()
-        cerrar_conexion(cursor, conn)
-        return respuesta
-    
-# Función para obtener la fecha_vencimiento de una tarea
-def fecha_vencimiento_tareas_usuario():
-    id_us = obtener_id_actual()
-    conn = conexion()
-    if conn is None:
-        print("Error al conectar a la base de datos")
-        return None
-    else:
-        cursor = conn.cursor()
-        cursor.execute(f"SELECT fecha_vencimiento FROM Tareas WHERE usuario_id = '{id_us}'")
-        respuesta = cursor.fetchall()
-        cerrar_conexion(cursor, conn)
-        return respuesta   
-         
-# Función para obtener el estado de una tarea
-def estado_tareas_usuario():
-    id_us = obtener_id_actual()
-    conn = conexion()
-    if conn is None:
-        print("Error al conectar a la base de datos")
-        return None
-    else:
-        cursor = conn.cursor()
-        cursor.execute(f"SELECT estado FROM Tareas WHERE usuario_id = '{id_us}'")
+        cursor.execute(f"SELECT nombre FROM Proyectos WHERE id_proyecto = '{id_p}'")
         respuesta = cursor.fetchall()
         cerrar_conexion(cursor, conn)
         return respuesta    
-    
-# Función para obtener la prioridad de una tarea
-def prioridad_tareas_usuario():
-    id_us = obtener_id_actual()
-    conn = conexion()
-    if conn is None:
-        print("Error al conectar a la base de datos")
-        return None
-    else:
-        cursor = conn.cursor()
-        cursor.execute(f"SELECT fecha_vencimiento FROM Tareas WHERE usuario_id = '{id_us}'")
-        respuesta = cursor.fetchall()
-        cerrar_conexion(cursor, conn)
-        return respuesta
      
 # Función para obtener nombre de un cliente
 def nombre_clientes_usuario():
     id_us = obtener_id_actual()
     conn = conexion()
-    if conn is None:
-        print("Error al conectar a la base de datos")
+    if conn is None:        
         return None
     else:
         cursor = conn.cursor()
@@ -188,8 +144,7 @@ def nombre_clientes_usuario():
 def clientes_clientes_usuario():
     id_us = obtener_id_actual()
     conn = conexion()
-    if conn is None:
-        print("Error al conectar a la base de datos")
+    if conn is None:        
         return None
     else:
         cursor = conn.cursor()
@@ -197,12 +152,12 @@ def clientes_clientes_usuario():
         respuesta = cursor.fetchall()
         cerrar_conexion(cursor, conn)
         return respuesta   
+    
 # Función para obtener el telofono de los clientes
 def telefono_clientes_usuario():
     id_us = obtener_id_actual()
     conn = conexion()
-    if conn is None:
-        print("Error al conectar a la base de datos")
+    if conn is None:        
         return None
     else:
         cursor = conn.cursor()
@@ -215,8 +170,7 @@ def telefono_clientes_usuario():
 def direccion_clientes_usuario():
     id_us = obtener_id_actual()
     conn = conexion()
-    if conn is None:
-        print("Error al conectar a la base de datos")
+    if conn is None:        
         return None
     else:
         cursor = conn.cursor()
@@ -224,14 +178,15 @@ def direccion_clientes_usuario():
         respuesta = cursor.fetchall()
         cerrar_conexion(cursor, conn)
         return respuesta 
-    
+
+# Funciones para los proyectos y tareas
+# ------------------------------------ #  
 # Función para obtener el id de el proyecto
 def id_proyecto_usuario(p):
     global id_proy
     proy = p
     conn = conexion()
-    if conn is None:
-        print("Error al conectar a la base de datos")
+    if conn is None:        
         return None
     else:
         cursor = conn.cursor()
@@ -244,9 +199,34 @@ def id_proyecto_usuario(p):
         else:
             cerrar_conexion(cursor, conn)
             return None 
+        
+# Función para obtener el id de la tarea
+def id_tarea_usuario(t):
+    global id_tarea
+    tar = t
+    conn = conexion()
+    if conn is None:        
+        return None
+    else:
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT id FROM Tareas WHERE titulo = '{tar}'")
+        respuesta = cursor.fetchall()
+        if respuesta:
+            id_tarea = respuesta[0]
+            cerrar_conexion(cursor, conn)   
+            return id_tarea
+        else:
+            cerrar_conexion(cursor, conn)
+            return None 
 
+
+# Funciones para las variables globales
+#--------------------------------------#
 # Función para guardar id de el proyecto
 def guardar_id_proyecto():
     global id_proy
     return id_proy 
-
+# Función para guardar id de el proyecto
+def guardar_id_tarea():
+    global id_tarea
+    return id_tarea

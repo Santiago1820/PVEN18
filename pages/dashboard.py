@@ -1,104 +1,204 @@
-# importar las librerias necesarias
 import flet as ft
+import datetime
 
-# importar las funciones necesarias
+# Importar las funciones necesarias
 from models.pages import *
 from config.settings import *
 from models.mvc import *
 from models.query import *
 from sources.menu import *
 
-# Codigo de la funcion RegisterPage
+# Función para obtener la altura de la pantalla
+def screeny(window_height):
+    return window_height
+
+# Código de la función Dashboard
 def Dashboard(page: ft.Page):
+    page.clean()
     def ver_mas_proyecto(proyecto):
         id_proyecto_usuario(proyecto)
         guardar_id_proyecto()[0]
         actualizar_tabla_tareas()
         page.update()
-    
+
     def actualizar_tabla_tareas():
         tareas = tareas_usuario()
         tabla_tareas.rows = [
             ft.DataRow(cells=[
                 ft.DataCell(ft.Text(tarea[0])),
-                ft.DataCell(ft.ElevatedButton("Seleccionar", on_click=lambda e, t=tarea: ver_mas_tarea(t))),
+                ft.DataCell(ft.ElevatedButton("Seleccionar", 
+                                              style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8)),
+                                              on_click=lambda e, t=tarea: ver_mas_tarea(t))),
             ]) for tarea in tareas
         ]
 
     def ver_mas_tarea(tarea):
-        pass
+        id_tarea_usuario(tarea[0])
+        guardar_id_tarea()
+        actualizar_tabla_info()
+        info_tarea()
+        page.update()
+
+    def actualizar_tabla_info():
+        infos = info_tarea()
+        proyecto = nombre_proyecto()[0]
+        tabla_infos.rows = [
+            ft.DataRow(cells=[
+                ft.DataCell(ft.Container(
+                ft.Column([
+                    ft.Text("Proyecto:", size=20, weight=ft.FontWeight.BOLD),
+                    ft.Text(proyecto[0]),
+                    ft.Text("Tarea:", size=20, weight=ft.FontWeight.BOLD),
+                    ft.Text(info[1]),
+                    ft.Text("Descripción:", size=20, weight=ft.FontWeight.BOLD),
+                    ft.Text(info[2]),
+                    ft.Text("Fecha inicio:", size=20, weight=ft.FontWeight.BOLD),
+                    ft.Text(datetime.datetime.fromisoformat(str(info[3])).strftime('%d/%m/%y')),
+                    ft.Text("Fecha fin:", size=20, weight=ft.FontWeight.BOLD),
+                    ft.Text(datetime.datetime.fromisoformat(str(info[4])).strftime('%d/%m/%y')),
+                    ft.Text("Estado:", size=20, weight=ft.FontWeight.BOLD),
+                    ft.Text(info[5]),
+                    ft.Text("Prioridad:", size=20, weight=ft.FontWeight.BOLD),
+                    ft.Text(info[6]),
+                ]),
+                ),
+                    ),
+            ]) for info in infos
+        ]
 
     page.clean()
     page.update()
-    if is_logged(page) is not False: 
+    if is_logged(page) is not False:
         proyectos = proyectos_usuario()
-        # tareas = tareas_usuario()
-        # Definir las propiedades de la pagina
         page.window_title_bar_hidden = False
         page.window_maximized = True
         page.title = titulo
         page.theme_mode = tema
+        page.bgcolor = ft.colors.SURFACE_VARIANT
         page.padding = 0
-        page.add(ft.Row([
-            ft.Column([
-                ft.Text(f"{nombre_app}", size=30),
-                ft.Row([
-                    ft.Column([
-                    menu(page),
-                    ]),
-                ]),
+
+        # Estilos de el título y las tarjetass
+        title_style = ft.TextStyle(size=24, weight=ft.FontWeight.BOLD)
+        card_style = {
+            "bgcolor": ft.colors.SURFACE,
+            "padding": 20,
+            "shadow": ft.BoxShadow(
+                spread_radius=1,
+                blur_radius=10,
+                color=ft.colors.with_opacity(0.3, ft.colors.BLACK),
+            )
+        }
+
+        # Obtener altura de la pantalla y ajustar el tamaño de todos los contenedores de tablas
+        contenedor_alto = screeny(page.window_height)
+
+        # Crear las tablas con el mismo tamaño
+        tabla_proyectos = ft.DataTable(
+            bgcolor=ft.colors.SURFACE,
+            heading_row_color=ft.colors.SECONDARY_CONTAINER,
+            heading_row_height=70,
+            data_row_color={ft.MaterialState.HOVERED: ft.colors.SECONDARY_CONTAINER},
+            columns=[
+                ft.DataColumn(ft.Text("Proyectos", style=title_style)),
+                ft.DataColumn(ft.Text("Acción")),
             ],
-            spacing=30,
-            alignment=ft.MainAxisAlignment.START,
-            ), # Menú lateral
-            ft.Row([
-                ft.Container(
-                    ft.Column([
-                    ft.Text(f"Dashboard", size=40),
+            rows=[
+                ft.DataRow(cells=[
+                    ft.DataCell(ft.Text(proyecto[0])),
+                    ft.DataCell(ft.ElevatedButton("Seleccionar", 
+                                                  style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8)),
+                                                  on_click=lambda e, p=proyecto[0]: ver_mas_proyecto(p))),
+                ]) for proyecto in proyectos
+            ],
+        )
+
+        tabla_tareas = ft.DataTable(
+            bgcolor=ft.colors.SURFACE,
+            heading_row_color=ft.colors.SECONDARY_CONTAINER,
+            heading_row_height=70,
+            data_row_color={ft.MaterialState.HOVERED: ft.colors.SECONDARY_CONTAINER},
+            columns=[
+                ft.DataColumn(ft.Text("Tareas", style=title_style)),
+                ft.DataColumn(ft.Text("Acción")),
+            ],
+            rows=[],
+        )
+
+        tabla_infos = ft.DataTable(
+            bgcolor=ft.colors.SURFACE,
+            heading_row_color=ft.colors.SECONDARY_CONTAINER,
+            heading_row_height=70,
+            columns=[
+                ft.DataColumn(ft.Text("Información", style=title_style)),
+            ],
+            rows=[],
+        )
+
+        # Agregar menú lateral
+        menu_lateral = menu(page)
+
+        page.add(
+            ft.ListView(
+                controls=[
                     ft.Row([
-                        ft.Column([
-                        tabla_proyectos := ft.DataTable(
-                            border=ft.border.all(2, "gray"),
-                            border_radius=10,
-                            vertical_lines=ft.BorderSide(3, "gray"),
-                            horizontal_lines=ft.BorderSide(3, "gray"),
-                            columns=[
-                                ft.DataColumn(ft.Text("Proyectos:", size=20)),
-                                ft.DataColumn(ft.Text("")),
+                        # Menú lateral estilos
+                        ft.Container(
+                            content=ft.Column(
+                                [ft.Text(f"{nombre_app}", style=title_style)] + menu_lateral.controls,
+                                spacing=10,
+                                alignment=ft.MainAxisAlignment.START,
+                            ),
+                            width=250,
+                            bgcolor=ft.colors.SURFACE,
+                            padding=20,
+                            height=page.height,
+                        ),
+                        # Mostramos las tablas
+                        ft.Container(
+                            content=ft.Column([
+                                ft.Row([
+                                    ft.Container(
+                                        content=ft.ListView( 
+                                            controls=[tabla_proyectos],
+                                            expand=True,
+                                        ),
+                                        **card_style,
+                                        width=400,
+                                        height=contenedor_alto,  
+                                    ),
+                                    ft.Container(
+                                        content=ft.ListView( 
+                                            controls=[tabla_tareas],
+                                            expand=True,
+                                        ),
+                                        **card_style,
+                                        width=400,
+                                        height=contenedor_alto,  
+                                    ),
+                                    ft.Container(
+                                        content=ft.ListView( 
+                                            controls=[tabla_infos],
+                                            expand=True,
+                                        ),
+                                        **card_style,
+                                        width=400,
+                                        height=contenedor_alto,  
+                                    ),
+                                ],
+                                alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                                ),
                             ],
-                            rows=[
-                                ft.DataRow(cells=[
-                                    ft.DataCell(ft.Text(proyecto[0])),
-                                    ft.DataCell(ft.ElevatedButton("Seleccionar", on_click=lambda e, p=proyecto[0]: ver_mas_proyecto(p))),
-                                ]) for proyecto in proyectos
-                            ],
-                        ), # Proyectos de el usuario
-                        ]), # Proyectos
-                        ft.Column([
-                        tabla_tareas := ft.DataTable(
-                            border=ft.border.all(2, "gray"),
-                            border_radius=10,
-                            vertical_lines=ft.BorderSide(3, "gray"),
-                            horizontal_lines=ft.BorderSide(3, "gray"),
-                            columns=[
-                                ft.DataColumn(ft.Text("Tareas:", size=20)),
-                                ft.DataColumn(ft.Text("")),
-                            ],
-                            rows=[],
-                        ), # Proyectos de el usuario
-                        ]), # Tareas
-                        ft.Column([
-                        ft.Text(f"Información:", size=20),
-                        ]), # Informacion
-                    ]),
-                    ]),
-                ),
-            ],
-            spacing=30,
-            alignment="spaceBetween",
-            ), # Contenido
-        ],
-        spacing=30,
-        alignment="start",
-        ))
+                            spacing=30,
+                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                            ),
+                            expand=True,
+                            padding=20,
+                        ),
+                    ],
+                    expand=True,
+                    ),
+                ],
+                expand=True,
+            )
+        )
     page.update()

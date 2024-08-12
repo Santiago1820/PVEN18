@@ -6,5 +6,5 @@
 nombre_app = "PVEN18"
 version = "1.0.0.0"
 titulo = f"{nombre_app} - v{version}"
-tema = "system"
+tema = "SYSTEM"
 logo = '../assets/icon.png'
