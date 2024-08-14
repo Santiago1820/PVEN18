@@ -12,19 +12,22 @@ from sources.menu import *
 def screeny(window_height):
     return window_height
 
-# Código de la función Clients
-def Clients(page: ft.Page):
+# Código de la función Notifications
+def Notifications(page: ft.Page):
     page.clean()
     page.update()
 
-    def ver_mas_cliente(cliente):
+    def leida(notificacion):
         pass
 
+    def borrar(notificacion):
+        pass
 
     page.clean()
     page.update()
     if is_logged(page) is not False:
-        clientes = clientes_usuario()
+        notis = notificaciones_sin_leer()
+        nots = notificaciones_leidas()
         page.window_title_bar_hidden = False
         page.window_maximized = True
         page.title = titulo
@@ -48,17 +51,39 @@ def Clients(page: ft.Page):
         contenedor_alto = screeny(page.window_height)
 
         # Crear las tablas con el mismo tamaño
-        tabla_clientes = ft.DataTable(
+        tabla_not = ft.DataTable(
             bgcolor=ft.colors.SURFACE,
             heading_row_color=ft.colors.SECONDARY_CONTAINER,
             heading_row_height=70,
             columns=[
-                ft.DataColumn(ft.Text("Clientes:", style=title_style)),
+                ft.DataColumn(ft.Text("Notificaciones:", style=title_style)),
+                ft.DataColumn(ft.Text("Acción")),
             ],
             rows=[
                 ft.DataRow(cells=[
-                    ft.DataCell(ft.Text(f"{cliente[1]}"), on_tap=lambda e, c=cliente[0]: ver_mas_cliente(c)),
-                ]) for cliente in clientes
+                    ft.DataCell(ft.Text(f"{noti[6]} | Vencimiento: {noti[3].strftime('%Y-%m-%d')}"), on_tap=lambda e, n=noti[0]: leida(n)),
+                    ft.DataCell(ft.ElevatedButton("Leída", 
+                                                  style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), color="#b3efc8"),
+                                                  on_click=lambda e, n=noti[0]: leida(n))),
+                ]) for noti in notis
+            ],
+        )
+        tabla_not_leidas = ft.DataTable(
+            bgcolor=ft.colors.SURFACE,
+            heading_row_color=ft.colors.SECONDARY_CONTAINER,
+            heading_row_height=70,
+            data_row_color={ft.MaterialState.HOVERED: ft.colors.SECONDARY_CONTAINER},
+            columns=[
+                ft.DataColumn(ft.Text("Leídas:", style=title_style)),
+                ft.DataColumn(ft.Text("Acción")),
+            ],
+            rows=[
+                ft.DataRow(cells=[
+                    ft.DataCell(ft.Text(notss[6])),
+                    ft.DataCell(ft.ElevatedButton("Borrar", 
+                                                  style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), color="red"),
+                                                  on_click=lambda e, n=notss[0]: borrar(n))),
+                ]) for notss in nots
             ],
         )
 
@@ -87,11 +112,20 @@ def Clients(page: ft.Page):
                                 ft.Row([
                                     ft.Container(
                                         content=ft.ListView( 
-                                            controls=[tabla_clientes],
+                                            controls=[tabla_not],
                                             expand=True,
                                         ),
                                         **card_style,
                                         width=800,
+                                        height=contenedor_alto,  
+                                    ),
+                                    ft.Container(
+                                        content=ft.ListView( 
+                                            controls=[tabla_not_leidas],
+                                            expand=True,
+                                        ),
+                                        **card_style,
+                                        width=400,
                                         height=contenedor_alto,  
                                     ),
                                 ],

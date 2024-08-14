@@ -8,6 +8,13 @@ def menu(page):
     # Menu usuario
     menu_items = [
         ft.Container(
+            content=ft.Row([ft.Icon(ft.icons.NOTIFICATIONS, color="yellow"), ft.Text("Notificaciones")]),
+            padding=10,
+            margin=ft.margin.only(bottom=5),
+            ink=True,
+            on_click=lambda _: page.go("/notifications")
+        ),
+        ft.Container(
             content=ft.Row([ft.Icon(ft.icons.HOME, color="white"), ft.Text("Inicio")]),
             padding=10,
             margin=ft.margin.only(bottom=5),

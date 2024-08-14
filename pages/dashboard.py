@@ -15,6 +15,8 @@ def screeny(window_height):
 # Código de la función Dashboard
 def Dashboard(page: ft.Page):
     page.clean()
+    def ver_mas_proyecto_info():
+        pass
     def ver_mas_proyecto(proyecto):
         id_proyecto_usuario(proyecto)
         guardar_id_proyecto()[0]
@@ -25,7 +27,7 @@ def Dashboard(page: ft.Page):
         tareas = tareas_usuario()
         tabla_tareas.rows = [
             ft.DataRow(cells=[
-                ft.DataCell(ft.Text(tarea[0])),
+                ft.DataCell(ft.Text(tarea[0]),),
                 ft.DataCell(ft.ElevatedButton("Seleccionar", 
                                               style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8),color="#f7ee8a"),
                                               on_click=lambda e, t=tarea: ver_mas_tarea(t))),
@@ -97,16 +99,15 @@ def Dashboard(page: ft.Page):
             bgcolor=ft.colors.SURFACE,
             heading_row_color=ft.colors.SECONDARY_CONTAINER,
             heading_row_height=70,
-            data_row_color={ft.MaterialState.HOVERED: ft.colors.SECONDARY_CONTAINER},
             columns=[
                 ft.DataColumn(ft.Text("Proyectos", style=title_style)),
                 ft.DataColumn(ft.Text("Acción")),
             ],
             rows=[
                 ft.DataRow(cells=[
-                    ft.DataCell(ft.Text(proyecto[0])),
+                    ft.DataCell(ft.Text(proyecto[0]), on_tap=lambda e, p=proyecto: ver_mas_proyecto_info()),
                     ft.DataCell(ft.ElevatedButton("Seleccionar", 
-                                                  style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), color="#a4c639"),
+                                                  style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), color="#b3efc8"),
                                                   on_click=lambda e, p=proyecto[0]: ver_mas_proyecto(p))),
                 ]) for proyecto in proyectos
             ],

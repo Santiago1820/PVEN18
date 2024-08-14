@@ -1,5 +1,6 @@
 # Importar las librerias necesarias
 import flet as ft
+import re
 
 # importar las funciones necesarias
 from models.pages import *
@@ -77,7 +78,7 @@ def LoginPage(page: ft.Page):
 
         error_user = ft.CupertinoAlertDialog(
             title=ft.Text("Error"),
-            content=ft.Text("Usuario o contraseña incorrectos"),
+            content=ft.Text("Correo o contraseña incorrectos"),
             actions=[
                 ft.CupertinoDialogAction(
                     "Cerrar",
@@ -87,25 +88,24 @@ def LoginPage(page: ft.Page):
             ],
         )
 
-        # Mensaje de error de permisos
-        def open_error_permisos(e):
-            page.dialog = error_permisos 
-            error_permisos.open = True
+        # Mensaje de error de correo
+        def open_error_correo(e):
+            page.dialog = error_correo
+            error_correo.open = True
             page.update()
 
-        def close_error_permisos(e):
-            page.dialog = error_permisos  
-            error_permisos.open = False
+        def close_error_correo(e):
+            page.dialog = error_correo 
+            error_correo.open = False
             page.update()
-
-        error_permisos  = ft.CupertinoAlertDialog(
-            title=ft.Text("¡Upps!"),
-            content=ft.Text("Parece que no eres un administrador"),
+        error_correo = ft.CupertinoAlertDialog(
+            title=ft.Text("Error"),
+            content=ft.Text("Solo se permiten correos"),
             actions=[
                 ft.CupertinoDialogAction(
                     "Cerrar",
                     is_destructive_action=True,
-                    on_click=close_error_permisos,
+                    on_click=close_error_correo,
                 ),
             ],
         )
@@ -119,6 +119,11 @@ def LoginPage(page: ft.Page):
             # Validamos los campos
             if user == "" or contra == "":
                 open_error_campo(e)
+                return
+            
+            # Validamos el formato del correo
+            if not re.match(r"[^@]+@[^@]+\.[^@]+", user):
+                open_error_correo(e)
                 return
             
             # Encriptamos la contraseña

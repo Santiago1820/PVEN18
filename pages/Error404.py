@@ -14,7 +14,7 @@ def Error404(page: ft.Page):
     # Crear el botón para regresar a la ruta anterior
     back_button = ft.ElevatedButton(
         text="Go Back",
-        on_click=lambda e: page.go("back")
+        on_click=lambda e: page.go("/")
     )
     
     # Agregar los elementos a la página

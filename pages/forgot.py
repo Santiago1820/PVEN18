@@ -17,6 +17,7 @@ def ForgotPage(page: ft.Page):
         page.window_height = 740
         page.title = titulo
         page.theme_mode = tema
+        page.bgcolor = ft.colors.SURFACE_VARIANT
         page.padding = 0
         # Barra de titulo personalizada
         page.add(
@@ -34,7 +35,7 @@ def ForgotPage(page: ft.Page):
                             rotate=ft.Rotate(0.98*3.14),
                             width=360,
                             height=560,
-                            bgcolor="#22ffffff",
+                            bgcolor="#686868",
                         ),
                 ft.Container(
                     ft.Container(
@@ -47,6 +48,7 @@ def ForgotPage(page: ft.Page):
                             ),
                             ft.Text(
                                 "Recuperar Contraseña",
+                                color="black",
                                 size=25,
                                 weight='w700',
                                 width=360,
@@ -109,7 +111,7 @@ def ForgotPage(page: ft.Page):
                                 ft.Row([
                                     ft.TextButton(
                                         on_click=lambda _: page.go("/"),
-                                        content= ft.Text("Volver al inicio",color="#303030",),
+                                        content= ft.Text("<< Volver al inicio",color="#303030",),
                                     )
                                 ],spacing=-1),padding=ft.padding.only(40),
                             )

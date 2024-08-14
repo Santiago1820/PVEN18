@@ -5,6 +5,31 @@ from models.mvc import *
 id_proy = None
 id_tarea = None
 
+# Funcion de register y Recuperar contraseña
+#-------------------------------------------#
+# Función para registrar un usuario
+def is_registered(correo):
+    conn = conexion()
+    if conn is None:        
+        return None
+    else:
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT correo_electronico FROM Usuarios WHERE correo_electronico = '{correo}'")
+        respuesta = cursor.fetchall()
+        cerrar_conexion(cursor, conn)
+        return respuesta
+
+def registrar_usuario(nombre, user, contraseña):
+    conn = conexion()
+    if conn is None:        
+        return None
+    else:
+        cursor = conn.cursor()
+        cursor.execute(f"INSERT INTO `Usuarios` (`nombre`, `correo_electronico`, `contrasena`) VALUES ('{nombre}','{user}','{contraseña}')")
+        conn.commit()
+        cerrar_conexion(cursor, conn)
+        return True
+
 # Funciones para los datos del Usuario
 #-------------------------------------#
 # Función para obtener el nombre del usuario actual
@@ -127,57 +152,18 @@ def nombre_proyecto():
         cerrar_conexion(cursor, conn)
         return respuesta    
      
-# Función para obtener nombre de un cliente
-def nombre_clientes_usuario():
+# Función para obtener clientes del usuario
+def clientes_usuario():
     id_us = obtener_id_actual()
     conn = conexion()
     if conn is None:        
         return None
     else:
         cursor = conn.cursor()
-        cursor.execute(f"SELECT nombre FROM Clientes WHERE _id = '{id_us}'")
+        cursor.execute(f"SELECT * FROM Clientes WHERE id_usuario = '{id_us}'")
         respuesta = cursor.fetchall()
         cerrar_conexion(cursor, conn)
         return respuesta   
-                           
-# Función para obtener el correo_electronico de un cliente
-def clientes_clientes_usuario():
-    id_us = obtener_id_actual()
-    conn = conexion()
-    if conn is None:        
-        return None
-    else:
-        cursor = conn.cursor()
-        cursor.execute(f"SELECT correo_electronico FROM Clientes WHERE _id = '{id_us}'")
-        respuesta = cursor.fetchall()
-        cerrar_conexion(cursor, conn)
-        return respuesta   
-    
-# Función para obtener el telofono de los clientes
-def telefono_clientes_usuario():
-    id_us = obtener_id_actual()
-    conn = conexion()
-    if conn is None:        
-        return None
-    else:
-        cursor = conn.cursor()
-        cursor.execute(f"SELECT telefono FROM Clientes WHERE _id = '{id_us}'")
-        respuesta = cursor.fetchall()
-        cerrar_conexion(cursor, conn)
-        return respuesta  
-          
-# Función para obtener la direccion de los clientes   
-def direccion_clientes_usuario():
-    id_us = obtener_id_actual()
-    conn = conexion()
-    if conn is None:        
-        return None
-    else:
-        cursor = conn.cursor()
-        cursor.execute(f"SELECT direccion FROM Clientes WHERE _id = '{id_us}'")
-        respuesta = cursor.fetchall()
-        cerrar_conexion(cursor, conn)
-        return respuesta 
 
 # Funciones para los proyectos y tareas
 # ------------------------------------ #  
@@ -218,7 +204,74 @@ def id_tarea_usuario(t):
         else:
             cerrar_conexion(cursor, conn)
             return None 
+        
+# Funciones para los reportes
+#----------------------------#
+# Funcion para obtener las tareas pendientes
+def tareas_pendientes():
+    id_us = obtener_id_actual()
+    conn = conexion()
+    if conn is None:        
+        return None
+    else:
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT titulo, fecha_vencimiento FROM Tareas WHERE usuario_id = '{id_us}' AND estado = 'Pendiente'")
+        respuesta = cursor.fetchall()
+        cerrar_conexion(cursor, conn)
+        return respuesta
+    
+# Funcion para obtener las tareas en progreso
+def tareas_progreso():
+    id_us = obtener_id_actual()
+    conn = conexion()
+    if conn is None:        
+        return None
+    else:
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT titulo, fecha_vencimiento FROM Tareas WHERE usuario_id = '{id_us}' AND estado = 'En Progreso'")
+        respuesta = cursor.fetchall()
+        cerrar_conexion(cursor, conn)
+        return respuesta
+    
+# Funcion para obtener las tareas terminadas
+def tareas_terminadas():
+    id_us = obtener_id_actual()
+    conn = conexion()
+    if conn is None:        
+        return None
+    else:
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT titulo FROM Tareas WHERE usuario_id = '{id_us}' AND estado = 'Completa'")
+        respuesta = cursor.fetchall()
+        cerrar_conexion(cursor, conn)
+        return respuesta
 
+# Funciones para las notificaciones
+#---------------------------------#
+# Función para obtener las notificaciones sin leer
+def notificaciones_sin_leer():
+    id_us = obtener_id_actual()
+    conn = conexion()
+    if conn is None:        
+        return None
+    else:
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT a.*, b.titulo FROM Notificaciones a JOIN Tareas b ON b.id = a.tarea_id WHERE a.usuario_id = '{id_us}' AND a.leida ='0'")
+        respuesta = cursor.fetchall()
+        cerrar_conexion(cursor, conn)
+        return respuesta
+    
+def notificaciones_leidas():
+    id_us = obtener_id_actual()
+    conn = conexion()
+    if conn is None:        
+        return None
+    else:
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT a.*, b.titulo FROM Notificaciones a JOIN Tareas b ON b.id = a.tarea_id WHERE a.usuario_id = '{id_us}' AND a.leida ='1'")
+        respuesta = cursor.fetchall()
+        cerrar_conexion(cursor, conn)
+        return respuesta
 
 # Funciones para las variables globales
 #--------------------------------------#

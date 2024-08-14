@@ -126,4 +126,3 @@ def cerrar_sesion(page):
     page.clean()
     page.update()
     return id_user, usr
-

@@ -11,6 +11,7 @@ from pages.perfil import Profile
 from pages.forgot import ForgotPage 
 from pages.reportes import Reports
 from pages.clientes import Clients
+from pages.notificaciones import Notifications
 
 # Definir la funcion Pages que recibe un objeto de tipo Page
 def Pages(page: ft.Page):
@@ -52,7 +53,11 @@ def Pages(page: ft.Page):
         elif page.route == "/clients":
             page.clean()
             page.update()
-            Clients(page)       
+            Clients(page)  
+        elif page.route == "/notifications":
+            page.clean()
+            page.update()
+            Notifications(page)     
         else:
             page.clean()
             page.update()
