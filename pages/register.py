@@ -12,16 +12,16 @@ from models.query import *
 def RegisterPage(page: ft.Page):
     if login_block(page) is not True:
         # Definir las propiedades de la pagina
-        page.window_width = 580
-        page.window_title_bar_hidden = True
-        page.window_maximized = False
-        page.window_height = 740
+        page.window.width = 580
+        page.window.title_bar_hidden = True
+        page.window.maximized = False
+        page.window.height = 740
         page.title = titulo
         page.theme_mode = tema
         page.bgcolor = ft.colors.SURFACE_VARIANT
         page.padding = 0
-        page.window_top = screeny(page.window_height)
-        page.window_left = screenx(page.window_width)
+        page.window.top = screeny(page.window.height)
+        page.window.left = screenx(page.window.width)
 
         # Definimos los campos de nombre, correo y contraseña
         nombre = ft.TextField(

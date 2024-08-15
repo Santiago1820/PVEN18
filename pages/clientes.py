@@ -25,8 +25,8 @@ def Clients(page: ft.Page):
     page.update()
     if is_logged(page) is not False:
         clientes = clientes_usuario()
-        page.window_title_bar_hidden = False
-        page.window_maximized = True
+        page.window.title_bar_hidden = False
+        page.window.maximized = True
         page.title = titulo
         page.theme_mode = tema
         page.bgcolor = ft.colors.SURFACE_VARIANT
@@ -45,7 +45,7 @@ def Clients(page: ft.Page):
         }
 
         # Obtener altura de la pantalla y ajustar el tamaño de todos los contenedores de tablas
-        contenedor_alto = screeny(page.window_height)
+        contenedor_alto = screeny(page.window.height)
 
         # Crear las tablas con el mismo tamaño
         tabla_clientes = ft.DataTable(

@@ -12,9 +12,9 @@ def ForgotPage(page: ft.Page):
     page.update()
     if login_block(page) is not True:
         # Definir las propiedades de la pagina
-        page.window_title_bar_hidden = True
-        page.window_width = 580
-        page.window_height = 740
+        page.window.title_bar_hidden = True
+        page.window.width = 580
+        page.window.height = 740
         page.title = titulo
         page.theme_mode = tema
         page.bgcolor = ft.colors.SURFACE_VARIANT

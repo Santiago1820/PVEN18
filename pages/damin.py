@@ -15,8 +15,8 @@ def Dadmin(page: ft.Page):
         if is_admin(page) is True:
             nombre = nombre_usuario()[0]
             # Definir las propiedades de la pagina
-            page.window_title_bar_hidden = False
-            page.window_maximized = True
+            page.window.title_bar_hidden = False
+            page.window.maximized = True
             page.title = titulo
             page.theme_mode = tema
             page.padding = 0

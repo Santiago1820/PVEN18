@@ -19,8 +19,8 @@ def Profile(page: ft.Page):
         imagen = imagen_usuario()[0]
         
         # Definir las propiedades de la página
-        page.window_title_bar_hidden = False
-        page.window_maximized = True
+        page.window.title_bar_hidden = False
+        page.window.maximized = True
         page.title = titulo
         page.theme_mode = ft.ThemeMode.DARK
         page.bgcolor = ft.colors.SURFACE_VARIANT

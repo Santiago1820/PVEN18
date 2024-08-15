@@ -113,8 +113,8 @@ def Reports(page: ft.Page):
         pendientes = tareas_pendientes()
         progresos = tareas_progreso()
         terminados = tareas_terminadas()
-        page.window_title_bar_hidden = False
-        page.window_maximized = True
+        page.window.title_bar_hidden = False
+        page.window.maximized = True
         page.title = titulo
         page.theme_mode = tema
         page.bgcolor = ft.colors.SURFACE_VARIANT
@@ -133,7 +133,7 @@ def Reports(page: ft.Page):
         }
 
         # Obtener altura de la pantalla y ajustar el tamaño de todos los contenedores de tablas
-        contenedor_alto = screeny(page.window_height)
+        contenedor_alto = screeny(page.window.height)
 
         # Crear las tablas con el mismo tamaño
         tabla_pendientes = ft.DataTable(

@@ -54,7 +54,7 @@ def encriptar(contraseña):
 # Función para cerrar la ventana
 def cerrar_app(page):
     cerrar_sesion(page)
-    page.window_close()
+    page.window.close()
 
 # Función para validar el usuario
 def validar_usuario(user, password_hash):
