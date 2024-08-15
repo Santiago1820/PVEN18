@@ -2,26 +2,47 @@
 import ctypes
 import hashlib
 import mysql.connector
-import os
+import sys
 
 # Importamos las funciones necesarias
-from dotenv import load_dotenv
-
-# Cargar las variables de entorno
-load_dotenv()
+from cryptography.fernet import Fernet
 
 # Variable global para almacenar datos del usuario
 usr = None
 id_user = None
 
+# Función para desencriptar las credenciales
+def desencriptar_credenciales():
+    # Leer la clave
+    with open("secret.key", "rb") as key_file:
+        key = key_file.read()
+
+    # Leer las credenciales encriptadas
+    with open("encrypted_credentials.bin", "rb") as encrypted_file:
+        encrypted_credentials = encrypted_file.read()
+
+    # Desencriptar las credenciales
+    cipher_suite = Fernet(key)
+    decrypted_credentials = cipher_suite.decrypt(encrypted_credentials).decode()
+
+    # Convertir las credenciales en un diccionario
+    credentials = {}
+    for line in decrypted_credentials.split('\n'):
+        if line:
+            var, value = line.split('=')
+            credentials[var] = value
+
+    return credentials
+
 # Función para conectar a la base de datos
 def conexion():
     try:
+        credentials = desencriptar_credenciales()
         conexion = mysql.connector.connect(
-            host=os.getenv('host'),
-            user=os.getenv('user'),
-            password=os.getenv('password'),
-            database=os.getenv('database'),
+            host=credentials['host'],
+            user=credentials['user'],
+            password=credentials['password'],
+            database=credentials['database'],
         )
         return conexion
     except mysql.connector.Error as e:
@@ -53,7 +74,6 @@ def encriptar(contraseña):
 
 # Función para cerrar la ventana
 def cerrar_app(page):
-    cerrar_sesion(page)
     page.window.close()
 
 # Función para validar el usuario

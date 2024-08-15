@@ -2,6 +2,8 @@
 import flet as ft
 import re
 
+window_closed = False
+
 # Importar las funciones necesarias
 from models.pages import *
 from config.settings import titulo, tema, logo
@@ -118,6 +120,10 @@ error_correo = ft.AlertDialog(
 
 # Código de la función LoginPage
 def LoginPage(page: ft.Page):
+    global window_closed
+    if not window_closed:
+        page.window.close()
+        window_closed = True
     if login_block(page) is not True:
         # Definir las propiedades de la página
         page.window.width = 580
