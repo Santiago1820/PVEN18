@@ -35,19 +35,19 @@ def menu(page):
             ink=True,
             on_click=lambda _: page.go("/clients")
         ),
+        # ft.Container(
+        #     content=ft.Row([ft.Icon(ft.icons.NOTE, color="yellow"), ft.Text("Notas")]),
+        #     padding=10,
+        #     margin=ft.margin.only(bottom=5),
+        #     ink=True,
+        #     on_click=lambda _: page.go("/notes")
+        # ),
         ft.Container(
             content=ft.Row([ft.Icon(ft.icons.BAR_CHART, color="#a4c639"), ft.Text("Reportes")]),
             padding=10,
             margin=ft.margin.only(bottom=5),
             ink=True,
             on_click=lambda _: page.go("/reports")
-        ),
-        ft.Container(
-            content=ft.Row([ft.Icon(ft.icons.NOTE, color="yellow"), ft.Text("Notas")]),
-            padding=10,
-            margin=ft.margin.only(bottom=5),
-            ink=True,
-            on_click=lambda _: page.go("/notes")
         ),
         ft.Container(
             content=ft.Row([ft.Icon(ft.icons.EXIT_TO_APP, color=ft.colors.ERROR), ft.Text("Salir", color=ft.colors.ERROR)]),
