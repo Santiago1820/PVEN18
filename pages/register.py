@@ -2,15 +2,18 @@
 import flet as ft
 import re
 
-# importar las funciones necesarias
+# Importar las funciones necesarias
 from models.pages import *
 from config.settings import titulo, tema, logo
 from models.mvc import *
 from models.query import *
 
-# Codigo de la funcion RegisterPage
+# Codigo que manda a llamar a la página RegisterPage
 def RegisterPage(page: ft.Page):
+
+    # Validamos si el usuario esta logueado (Únicamente en web)
     if login_block(page) is not True:
+
         # Definir las propiedades de la pagina
         page.window.width = 580
         page.window.title_bar_hidden = True
@@ -51,70 +54,70 @@ def RegisterPage(page: ft.Page):
                                     password=True,
                                 )
 
-        # Mensaje de error de validacion de campos
+        # Mensajes de errores (1. Abrir, 2. Cerrar, 3. Mensaje a mostrar)
         def open_error_campo(e):
-            page.dialog = error_campo 
+            e.page.overlay.append(error_campo)
             error_campo.open = True
-            page.update()
+            e.page.update()
 
         def close_error_campo(e):
-            page.dialog = error_campo 
             error_campo.open = False
-            page.update()
+            e.page.update()
 
-        error_campo = ft.CupertinoAlertDialog(
+        error_campo = ft.AlertDialog(
+            modal=True,
             title=ft.Text("Error"),
             content=ft.Text("Por favor llene todos los campos"),
             actions=[
-                ft.CupertinoDialogAction(
+                ft.TextButton(
                     "Cerrar",
-                    is_destructive_action=True,
                     on_click=close_error_campo,
                 ),
             ],
+            actions_alignment=ft.MainAxisAlignment.END,
         )
 
         def open_error_user(e):
-            page.dialog = error_user
+            e.page.overlay.append(error_user)
             error_user.open = True
-            page.update()
+            e.page.update()
 
         def close_error_user(e):
-            page.dialog = error_user 
             error_user.open = False
-            page.update()
+            e.page.update()
 
-        error_user = ft.CupertinoAlertDialog(
+        error_user = ft.AlertDialog(
+            modal= True,
             title=ft.Text("Error"),
             content=ft.Text("Correo ya registrado"),
             actions=[
-                ft.CupertinoDialogAction(
+                ft.TextButton(
                     "Cerrar",
-                    is_destructive_action=True,
                     on_click=close_error_user,
                 ),
             ],
+            actions_alignment=ft.MainAxisAlignment.END,
         )
 
         def open_error_correo(e):
-            page.dialog = error_correo
+            e.page.overlay.append(error_correo)
             error_correo.open = True
-            page.update()
+            e.page.update()
 
         def close_error_correo(e):
-            page.dialog = error_correo 
             error_correo.open = False
-            page.update()
-        error_correo = ft.CupertinoAlertDialog(
+            e.page.update()
+        error_correo = ft.AlertDialog(
+            modal=True,
             title=ft.Text("Error"),
             content=ft.Text("Solo se permiten correos"),
             actions=[
-                ft.CupertinoDialogAction(
+                ft.TextButton(
                     "Cerrar",
-                    is_destructive_action=True,
                     on_click=close_error_correo,
                 ),
             ],
+            actions_alignment=ft.MainAxisAlignment.END,
         )
 
         # Definimos la funcion para el boton de entrar
@@ -124,7 +127,7 @@ def RegisterPage(page: ft.Page):
             contra = password.value
             page.update()
 
-            # Validamos los campos
+            # Validamos los campos sean diferentes a nulos
             if user == "" or contra == "" or name == "":
                 open_error_campo(e)
                 return
@@ -137,7 +140,7 @@ def RegisterPage(page: ft.Page):
             # Encriptamos la contraseña
             password_hash = encriptar(contra)
 
-            # Validamos el usuario
+            # Validamos el usuario si esta registrado en dado caso de que este registrado le mostramos error, si no lo registramos y los redireccionamos a la página de inicio de sesión para que pueda iniciar sesión por primera vez
             usuario_valido = is_registered(user)
             if usuario_valido != []:
                 open_error_user(e)
@@ -149,7 +152,7 @@ def RegisterPage(page: ft.Page):
             
 
 
-        # Barra de titulo personalizada
+        # Barra de titulo personalizada la cual evita el movimiento de la ventana, y agrega el botón "x" que manda a llamar la función para cerrar el programa
         page.add(
             ft.Container(
                 ft.Container(ft.IconButton(ft.icons.CLOSE, on_click=lambda _: cerrar_app(page), icon_color='red', tooltip='Cerrar'),height=30, alignment=ft.alignment.center_right)

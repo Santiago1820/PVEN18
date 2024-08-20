@@ -1,5 +1,0 @@
-{
-    "CodeGPT.apiKey": "Ollama",
-    "CodeGPT.Autocomplete.maxTokens": 1024,
-    "CodeGPT.Autocomplete.provider": "Ollama - codestral:latest"
-}

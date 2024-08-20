@@ -43,6 +43,13 @@ def menu(page):
             on_click=lambda _: page.go("/reports")
         ),
         ft.Container(
+            content=ft.Row([ft.Icon(ft.icons.NOTE, color="yellow"), ft.Text("Notas")]),
+            padding=10,
+            margin=ft.margin.only(bottom=5),
+            ink=True,
+            on_click=lambda _: page.go("/notes")
+        ),
+        ft.Container(
             content=ft.Row([ft.Icon(ft.icons.EXIT_TO_APP, color=ft.colors.ERROR), ft.Text("Salir", color=ft.colors.ERROR)]),
             padding=10,
             margin=ft.margin.only(top=20),

@@ -2,6 +2,7 @@
 import flet as ft
 import re
 
+# Variable para corregir error de doble apertura
 window_closed = False
 
 # Importar las funciones necesarias
@@ -19,7 +20,7 @@ def entrar_click(e):
     contra = password.value
     e.page.update()
 
-    # Validamos los campos
+    # Validamos los campos que no sean vacios
     if user == "" or contra == "":
         open_error_campo(e)
         return
@@ -32,7 +33,7 @@ def entrar_click(e):
     # Encriptamos la contraseña
     password_hash = encriptar(contra)
 
-    # Validamos el usuario
+    # Validamos el usuario que sea valido y lo comparamos si es administrador o si es usuario
     usuario_valido = validar_usuario(user, password_hash)
     if usuario_valido is None:
         open_error_user(e)
@@ -118,13 +119,17 @@ error_correo = ft.AlertDialog(
     actions_alignment=ft.MainAxisAlignment.END,
 )
 
-# Código de la función LoginPage
+# Código que manda a llamar a la página de LoginPage
 def LoginPage(page: ft.Page):
-    global window_closed
-    if not window_closed:
-        page.window.close()
-        window_closed = True
+    # Función para corregir error de doble apertura (Para ejecutarlo en editor de codigo comenta las lineas 125-128 si lo vas a correr desde un archivo empaquetado descomentarla)
+    # global window_closed
+    # if not window_closed:
+    #     page.window.close()
+    #     window_closed = True
+
+    # Función para bloquear el login en dado caso de que ya haya iniciado sesión (Únicamente en web) 
     if login_block(page) is not True:
+
         # Definir las propiedades de la página
         page.window.width = 580
         page.window.title_bar_hidden = True
@@ -158,7 +163,7 @@ def LoginPage(page: ft.Page):
             password=True,
         )
 
-        # Barra de título personalizada
+        # Barra de título personalizada la cual evita el movimiento de la ventana y tiene icono de "x" para poder salir del programa
         page.add(
             ft.Container(
                 ft.Container(ft.IconButton(ft.icons.CLOSE, on_click=cerrar_app, icon_color='red', tooltip='Cerrar'), height=30, alignment=ft.alignment.center_right)
