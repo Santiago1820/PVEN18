@@ -1,7 +1,7 @@
 # -------------------------------------------------- #
 #                      PVEN18                        #
 # Desarrollado por: Cesar Santiago Negrete Bellomo   #
-#        Última modificación: 20-08-2024             #
+#        Última modificación: 02-09-2024             #
 # -------------------------------------------------- #
 nombre_app = "PVEN18"
 version = "1.1.1.0"
