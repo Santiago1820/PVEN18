@@ -25,6 +25,7 @@ def RegisterPage(page: ft.Page):
         page.padding = 0
         page.window.top = screeny(page.window.height)
         page.window.left = screenx(page.window.width)
+        page.adaptive = True
 
         # Definimos los campos de nombre, correo y contraseña
         nombre = ft.TextField(

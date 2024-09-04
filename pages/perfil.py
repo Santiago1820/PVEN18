@@ -62,7 +62,7 @@ def Profile(page: ft.Page):
                     ft.Text("Mi perfil", style=ft.TextStyle(size=40, weight=ft.FontWeight.BOLD)),
                     ft.Container(
                         content=ft.Image(
-                            src=f"../{imagen[0]}",
+                            src=obtener_img_usr(imagen[0]),
                             width=200,
                             height=200,
                         ),

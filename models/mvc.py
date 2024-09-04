@@ -1,35 +1,68 @@
-# Importamos las librerías necesarias
 import ctypes
 import hashlib
 import mysql.connector
 import sys
-
-# Importamos las funciones necesarias
+import dropbox
+import requests
 from cryptography.fernet import Fernet
+
+# Credenciales de la aplicación
+APP_KEY = 'p7604goq0hcg570'
+APP_SECRET = '15qcohqd1pff6j8'
+REFRESH_TOKEN = ''
 
 # Variable global para almacenar datos del usuario
 usr = None
 id_user = None
 
+# Variable para las credenciales de dropbox
+ACCESS_TOKEN = 'sl.B8OhHWWgDi6jyRi3orJwpPkmopNJkMxnn-4o7QZ0hCBqwMFi-zshrc1Jnf-mbjt4dGfIU7duuvhDvaf0Ea9N_ozG3Nu0-zwKhNhxCD6rmbGykhCI9PUAdfvjohj04ALi-XJOwwvCBTT73Qw'
+dbx = dropbox.Dropbox(ACCESS_TOKEN)
+
+def renovar_access_token():
+    url = "https://api.dropboxapi.com/oauth2/token"
+    data = {
+        'grant_type': 'refresh_token',
+        'refresh_token': REFRESH_TOKEN,
+        'client_id': APP_KEY,
+        'client_secret': APP_SECRET
+    }
+    response = requests.post(url, data=data)
+    if response.status_code == 200:
+        new_access_token = response.json()['access_token']
+        return new_access_token
+    else:
+        print("Error al renovar el Access Token:", response.json())
+        return None
+
+# Función para obtener la imagen de usuario de dropbox
+def obtener_img_usr(dropbox_path):
+    global dbx
+    try:
+        link = dbx.files_get_temporary_link(dropbox_path)
+        return link.link
+    except dropbox.exceptions.AuthError:
+        new_access_token = renovar_access_token()
+        print(new_access_token)
+        if new_access_token:
+            dbx = dropbox.Dropbox(new_access_token)
+            link = dbx.files_get_temporary_link(dropbox_path)
+            return link.link
+        else:
+            print("No se pudo renovar el Access Token")
+            return None
+
 # Función para desencriptar las credenciales
 def desencriptar_credenciales():
-    # Leer la clave
     key = "xGqEkVe8ol9RIrZ7vTBITGHs4njqkRK2CXB19iGLlFM="
-
-    # Leer las credenciales encriptadas
     encrypted_credentials = "gAAAAABmvgF9kxOfksqnszPY-vP3h23kZrKivC6NpVr-S6Y2IMK8SkSLpdJLqkLDrEz-z8xua60JhCgFyR5okTqrlHwXUPbHETEcKIXAYnRRPWw59ZWPZDEfR2X5WoJTGdy-QYebA6uUL8jI8RDDfG7UYppOyMBH38zduesezcx1gSYXOAx-LPriGUFKKEcnFPdLnf4xmmgQ"
-
-    # Desencriptar las credenciales
     cipher_suite = Fernet(key)
     decrypted_credentials = cipher_suite.decrypt(encrypted_credentials).decode()
-
-    # Convertir las credenciales en un diccionario
     credentials = {}
     for line in decrypted_credentials.split('\n'):
         if line:
             var, value = line.split('=')
             credentials[var] = value
-
     return credentials
 
 # Función para conectar a la base de datos
@@ -144,3 +177,17 @@ def cerrar_sesion(page):
     page.clean()
     page.update()
     return id_user, usr
+
+# Función para ir atrás en la página 404
+def go_back(page):
+    if id_user == None:
+        page.go("/")
+    else:
+        if usr == "Administrativo":
+            page.clean()
+            page.update()
+            page.go("/admin")
+        else:
+            page.clean()
+            page.update()
+            page.go("/dashboard")

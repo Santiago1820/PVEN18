@@ -24,6 +24,7 @@ def Dadmin(page: ft.Page):
             page.theme_mode = ft.ThemeMode.DARK
             page.bgcolor = ft.colors.SURFACE_VARIANT
             page.padding = 0
+            page.adaptive = True
 
             # Estilos comunes
             title_style = ft.TextStyle(size=30, weight=ft.FontWeight.BOLD)

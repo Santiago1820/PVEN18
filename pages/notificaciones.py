@@ -34,6 +34,7 @@ def Notifications(page: ft.Page):
         page.theme_mode = tema
         page.bgcolor = ft.colors.SURFACE_VARIANT
         page.padding = 0
+        page.adaptive = True
 
         # Estilos de el título y las tarjetass
         title_style = ft.TextStyle(size=24, weight=ft.FontWeight.BOLD)

@@ -19,6 +19,7 @@ def ForgotPage(page: ft.Page):
         page.theme_mode = tema
         page.bgcolor = ft.colors.SURFACE_VARIANT
         page.padding = 0
+        page.adaptive = True
         # Barra de titulo personalizada
         page.add(
             ft.Container(

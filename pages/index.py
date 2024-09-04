@@ -141,6 +141,7 @@ def LoginPage(page: ft.Page):
         page.padding = 0
         page.window.top = screeny(page.window.height)
         page.window.left = screenx(page.window.width)
+        page.adaptive = True
 
         # Definimos los campos de usuario, contraseña y tipo de usuario
         global username, password
