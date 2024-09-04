@@ -14,12 +14,10 @@ id_user = None
 # Función para desencriptar las credenciales
 def desencriptar_credenciales():
     # Leer la clave
-    with open("test.key", "rb") as key_file:
-        key = "xGqEkVe8ol9RIrZ7vTBITGHs4njqkRK2CXB19iGLlFM="
+    key = "xGqEkVe8ol9RIrZ7vTBITGHs4njqkRK2CXB19iGLlFM="
 
     # Leer las credenciales encriptadas
-    with open("icons.bin", "rb") as encrypted_file:
-        encrypted_credentials = "gAAAAABmvgF9kxOfksqnszPY-vP3h23kZrKivC6NpVr-S6Y2IMK8SkSLpdJLqkLDrEz-z8xua60JhCgFyR5okTqrlHwXUPbHETEcKIXAYnRRPWw59ZWPZDEfR2X5WoJTGdy-QYebA6uUL8jI8RDDfG7UYppOyMBH38zduesezcx1gSYXOAx-LPriGUFKKEcnFPdLnf4xmmgQ"
+    encrypted_credentials = "gAAAAABmvgF9kxOfksqnszPY-vP3h23kZrKivC6NpVr-S6Y2IMK8SkSLpdJLqkLDrEz-z8xua60JhCgFyR5okTqrlHwXUPbHETEcKIXAYnRRPWw59ZWPZDEfR2X5WoJTGdy-QYebA6uUL8jI8RDDfG7UYppOyMBH38zduesezcx1gSYXOAx-LPriGUFKKEcnFPdLnf4xmmgQ"
 
     # Desencriptar las credenciales
     cipher_suite = Fernet(key)
